@@ -6549,6 +6549,7 @@ static void op_check_charger_collapse(struct smb_charger *chg)
 
 static void op_check_charger_uovp(struct smb_charger *chg, int vchg_mv)
 {
+#if 0 /* This is unnecessary with QCOM regulators */
 	static int over_volt_count, not_over_volt_count;
 	static bool uovp_satus, pre_uovp_satus;
 	int detect_time = 3; /* 3 x 6s = 18s */
@@ -6600,6 +6601,7 @@ static void op_check_charger_uovp(struct smb_charger *chg, int vchg_mv)
 		}
 	}
 	pre_uovp_satus = uovp_satus;
+#endif
 }
 
 #if defined(CONFIG_FB)
