@@ -307,6 +307,10 @@ static int smb2_parse_dt(struct smb2 *chip)
 	OF_PROP_READ(node, "hot-bat-decidegc",
 			chg->BATT_TEMP_T6, rc, 1);
 
+	/* read other settings */
+	OF_PROP_READ(node, "qcom,cutoff-voltage-with-charger",
+				smbchg_cutoff_volt_with_charger, rc, 1);
+
 	chg->chg_enabled = !(of_property_read_bool(node,
 		"qcom,charging-disabled"));
 
