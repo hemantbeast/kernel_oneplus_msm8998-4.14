@@ -1665,10 +1665,6 @@ static struct clk_branch mmss_camss_cpp_ahb_clk = {
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data) {
 			.name = "mmss_camss_cpp_ahb_clk",
-			.parent_names = (const char *[]){
-				"ahb_clk_src",
-			},
-			.num_parents = 1,
 			.ops = &clk_branch2_ops,
 		},
 	},
@@ -1712,10 +1708,6 @@ static struct clk_branch mmss_camss_cpp_vbif_ahb_clk = {
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data) {
 			.name = "mmss_camss_cpp_vbif_ahb_clk",
-			.parent_names = (const char *[]){
-				"ahb_clk_src",
-			},
-			.num_parents = 1,
 			.ops = &clk_branch2_ops,
 		},
 	},
@@ -1747,10 +1739,6 @@ static struct clk_branch mmss_camss_csi0_ahb_clk = {
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data) {
 			.name = "mmss_camss_csi0_ahb_clk",
-			.parent_names = (const char *[]){
-				"ahb_clk_src",
-			},
-			.num_parents = 1,
 			.ops = &clk_branch2_ops,
 		},
 	},
@@ -1836,10 +1824,6 @@ static struct clk_branch mmss_camss_csi1_ahb_clk = {
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data) {
 			.name = "mmss_camss_csi1_ahb_clk",
-			.parent_names = (const char *[]){
-				"ahb_clk_src",
-			},
-			.num_parents = 1,
 			.ops = &clk_branch2_ops,
 		},
 	},
@@ -1925,10 +1909,6 @@ static struct clk_branch mmss_camss_csi2_ahb_clk = {
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data) {
 			.name = "mmss_camss_csi2_ahb_clk",
-			.parent_names = (const char *[]){
-				"ahb_clk_src",
-			},
-			.num_parents = 1,
 			.ops = &clk_branch2_ops,
 		},
 	},
@@ -2014,10 +1994,6 @@ static struct clk_branch mmss_camss_csi3_ahb_clk = {
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data) {
 			.name = "mmss_camss_csi3_ahb_clk",
-			.parent_names = (const char *[]){
-				"ahb_clk_src",
-			},
-			.num_parents = 1,
 			.ops = &clk_branch2_ops,
 		},
 	},
@@ -2260,10 +2236,6 @@ static struct clk_branch mmss_camss_ispif_ahb_clk = {
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data) {
 			.name = "mmss_camss_ispif_ahb_clk",
-			.parent_names = (const char *[]){
-				"ahb_clk_src",
-			},
-			.num_parents = 1,
 			.ops = &clk_branch2_ops,
 		},
 	},
@@ -2299,10 +2271,6 @@ static struct clk_branch mmss_camss_jpeg_ahb_clk = {
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data) {
 			.name = "mmss_camss_jpeg_ahb_clk",
-			.parent_names = (const char *[]){
-				"ahb_clk_src",
-			},
-			.num_parents = 1,
 			.ops = &clk_branch2_ops,
 		},
 	},
@@ -2401,10 +2369,6 @@ static struct clk_branch mmss_camss_micro_ahb_clk = {
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data) {
 			.name = "mmss_camss_micro_ahb_clk",
-			.parent_names = (const char *[]){
-				"ahb_clk_src",
-			},
-			.num_parents = 1,
 			.ops = &clk_branch2_ops,
 		},
 	},
@@ -2472,10 +2436,6 @@ static struct clk_branch mmss_camss_top_ahb_clk = {
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data) {
 			.name = "mmss_camss_top_ahb_clk",
-			.parent_names = (const char *[]){
-				"ahb_clk_src",
-			},
-			.num_parents = 1,
 			.ops = &clk_branch2_ops,
 		},
 	},
@@ -2489,10 +2449,6 @@ static struct clk_branch mmss_camss_vfe0_ahb_clk = {
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data) {
 			.name = "mmss_camss_vfe0_ahb_clk",
-			.parent_names = (const char *[]){
-				"ahb_clk_src",
-			},
-			.num_parents = 1,
 			.ops = &clk_branch2_ops,
 		},
 	},
@@ -2542,10 +2498,6 @@ static struct clk_branch mmss_camss_vfe1_ahb_clk = {
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data) {
 			.name = "mmss_camss_vfe1_ahb_clk",
-			.parent_names = (const char *[]){
-				"ahb_clk_src",
-			},
-			.num_parents = 1,
 			.ops = &clk_branch2_ops,
 		},
 	},
@@ -2595,10 +2547,6 @@ static struct clk_branch mmss_camss_vfe_vbif_ahb_clk = {
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data) {
 			.name = "mmss_camss_vfe_vbif_ahb_clk",
-			.parent_names = (const char *[]){
-				"ahb_clk_src",
-			},
-			.num_parents = 1,
 			.ops = &clk_branch2_ops,
 		},
 	},
@@ -2627,10 +2575,6 @@ static struct clk_branch mmss_mdss_ahb_clk = {
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data) {
 			.name = "mmss_mdss_ahb_clk",
-			.parent_names = (const char *[]){
-				"ahb_clk_src",
-			},
-			.num_parents = 1,
 			.flags = CLK_ENABLE_HAND_OFF,
 			.ops = &clk_branch2_ops,
 		},
@@ -2953,10 +2897,6 @@ static struct clk_branch mmss_mdss_hdmi_dp_ahb_clk = {
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data) {
 			.name = "mmss_mdss_hdmi_dp_ahb_clk",
-			.parent_names = (const char *[]){
-				"ahb_clk_src",
-			},
-			.num_parents = 1,
 			.ops = &clk_branch2_ops,
 		},
 	},
@@ -3118,8 +3058,6 @@ static struct clk_branch mmss_misc_cxo_clk = {
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data) {
 			.name = "mmss_misc_cxo_clk",
-			.parent_names = (const char *[]){ "bi_tcxo_ao" },
-			.num_parents = 1,
 			.flags = CLK_ENABLE_HAND_OFF,
 			.ops = &clk_branch2_ops,
 		},
@@ -3190,10 +3128,6 @@ static struct clk_branch mmss_video_ahb_clk = {
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data) {
 			.name = "mmss_video_ahb_clk",
-			.parent_names = (const char *[]){
-				"ahb_clk_src",
-			},
-			.num_parents = 1,
 			.ops = &clk_branch2_ops,
 		},
 	},
@@ -3258,10 +3192,6 @@ static struct clk_branch mmss_vmem_ahb_clk = {
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data) {
 			.name = "mmss_vmem_ahb_clk",
-			.parent_names = (const char *[]){
-				"ahb_clk_src",
-			},
-			.num_parents = 1,
 			.flags = CLK_ENABLE_HAND_OFF,
 			.ops = &clk_branch2_ops,
 		},
