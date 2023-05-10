@@ -53,15 +53,15 @@
 #define F_GFX(f, s, h, m, n, sf) { (f), (s), (2 * (h) - 1), (m), (n), (sf) }
 
 static int vdd_gpucc_corner[] = {
-	VDD_GFX_NONE,		/* OFF			*/
-	VDD_GFX_MIN_SVS,	/* MIN:  MinSVS		*/
-	VDD_GFX_LOW_SVS,	/* LOW:  LowSVS		*/
-	VDD_GFX_SVS_MINUS,	/* LOW:  SVS-		*/
-	VDD_GFX_SVS,		/* LOW:  SVS		*/
-	VDD_GFX_SVS_PLUS,	/* LOW:  SVS+		*/
-	VDD_GFX_NOMINAL,	/*       NOMINAL	*/
-	VDD_GFX_TURBO,		/* HIGH: TURBO		*/
-	VDD_GFX_TURBO_L1,	/* HIGH: TURBO_L1	*/
+	[VDD_GFX_NONE] = 0,			/* OFF			*/
+	[VDD_GFX_MIN_SVS] = 1,		/* MIN:  MinSVS		*/
+	[VDD_GFX_LOW_SVS] = 3,		/* LOW:  LowSVS		*/
+	[VDD_GFX_SVS_MINUS] = 5,	/* LOW:  SVS-		*/
+	[VDD_GFX_SVS] = 8,			/* LOW:  SVS		*/
+	[VDD_GFX_SVS_PLUS] = 8,		/* LOW:  SVS+		*/
+	[VDD_GFX_NOMINAL] = 8,		/*       NOMINAL	*/
+	[VDD_GFX_TURBO] = 8,		/* HIGH: TURBO		*/
+	[VDD_GFX_TURBO_L1] = 8,		/* HIGH: TURBO_L1	*/
 };
 
 static DEFINE_VDD_REGULATORS(vdd_dig, VDD_DIG_NUM, 1, vdd_corner);
