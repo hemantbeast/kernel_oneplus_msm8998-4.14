@@ -838,6 +838,8 @@ static int msm_ssphy_qmp_notify_connect(struct usb_phy *uphy,
 	dev_dbg(uphy->dev, "QMP phy connect notification\n");
 	phy->cable_connected = true;
 	dev_dbg(uphy->dev, "cable_connected=%d\n", phy->cable_connected);
+	/* Perform QMP PHY resume */
+	msm_ssphy_qmp_set_suspend(uphy, 0);
 	return 0;
 }
 
@@ -855,6 +857,8 @@ static int msm_ssphy_qmp_notify_disconnect(struct usb_phy *uphy,
 	dev_dbg(uphy->dev, "QMP phy disconnect notification\n");
 	dev_dbg(uphy->dev, " cable_connected=%d\n", phy->cable_connected);
 	phy->cable_connected = false;
+	/* Perform QMP PHY suspend */
+	msm_ssphy_qmp_set_suspend(uphy, 1);
 	return 0;
 }
 
