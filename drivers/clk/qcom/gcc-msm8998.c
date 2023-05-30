@@ -1063,7 +1063,7 @@ static struct clk_rcg2 sdcc2_apps_clk_src = {
 		.name = "sdcc2_apps_clk_src",
 		.parent_names = gcc_parent_names_1,
 		.num_parents = ARRAY_SIZE(gcc_parent_names_1),
-		.ops = &clk_rcg2_ops,
+		.ops = &clk_rcg2_floor_ops,
 		VDD_DIG_FMAX_MAP3(LOWER, 19200000, LOW, 100000000,
 					NOMINAL, 200000000),
 	},
@@ -1090,7 +1090,7 @@ static struct clk_rcg2 sdcc4_apps_clk_src = {
 		.name = "sdcc4_apps_clk_src",
 		.parent_names = gcc_parent_names_1,
 		.num_parents = ARRAY_SIZE(gcc_parent_names_1),
-		.ops = &clk_rcg2_ops,
+		.ops = &clk_rcg2_floor_ops,
 		VDD_DIG_FMAX_MAP3(LOWER, 19200000, LOW, 50000000,
 					NOMINAL, 100000000),
 	},
@@ -2075,6 +2075,7 @@ static struct clk_branch gcc_gpu_cfg_ahb_clk = {
 		.hw.init = &(struct clk_init_data) {
 			.name = "gcc_gpu_cfg_ahb_clk",
 			.ops = &clk_branch2_ops,
+			.flags = CLK_IS_CRITICAL,
 		},
 	},
 };
@@ -2091,19 +2092,6 @@ static struct clk_branch gcc_gpu_iref_clk = {
 	},
 };
 
-static struct clk_branch gcc_hmss_dvm_bus_clk = {
-	.halt_reg = 0x4808C,
-	.clkr = {
-		.enable_reg = 0x4808C,
-		.enable_mask = BIT(0),
-		.hw.init = &(struct clk_init_data) {
-			.name = "gcc_hmss_dvm_bus_clk",
-			.flags = CLK_IS_CRITICAL,
-			.ops = &clk_branch2_ops,
-		},
-	},
-};
-
 static struct clk_branch gcc_mmss_noc_cfg_ahb_clk = {
 	.halt_reg = 0x09004,
 	.clkr = {
@@ -2112,6 +2100,7 @@ static struct clk_branch gcc_mmss_noc_cfg_ahb_clk = {
 		.hw.init = &(struct clk_init_data) {
 			.name = "gcc_mmss_noc_cfg_ahb_clk",
 			.ops = &clk_branch2_ops,
+			.flags = CLK_IS_CRITICAL,
 		},
 	},
 };
@@ -2171,7 +2160,7 @@ static struct clk_branch gcc_pcie_0_mstr_axi_clk = {
 
 static struct clk_branch gcc_pcie_0_pipe_clk = {
 	.halt_reg = 0x6B018,
-	.halt_check = BRANCH_HALT_DELAY,
+	.halt_check = BRANCH_HALT_SKIP,
 	.clkr = {
 		.enable_reg = 0x6B018,
 		.enable_mask = BIT(0),
@@ -2471,38 +2460,41 @@ static struct clk_branch gcc_ufs_phy_aux_hw_ctl_clk = {
 	},
 };
 
-static struct clk_gate2 gcc_ufs_rx_symbol_0_clk = {
-	.udelay = 500,
+static struct clk_branch gcc_ufs_rx_symbol_0_clk = {
+	.halt_reg = 0x75014,
+	.halt_check = BRANCH_HALT_SKIP,
 	.clkr = {
 		.enable_reg = 0x75014,
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data) {
 			.name = "gcc_ufs_rx_symbol_0_clk",
-			.ops = &clk_gate2_ops,
+			.ops = &clk_branch2_ops,
 		},
 	},
 };
 
-static struct clk_gate2 gcc_ufs_rx_symbol_1_clk = {
-	.udelay = 500,
+static struct clk_branch gcc_ufs_rx_symbol_1_clk = {
+	.halt_reg = 0x7605C,
+	.halt_check = BRANCH_HALT_SKIP,
 	.clkr = {
 		.enable_reg = 0x7605C,
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data) {
 			.name = "gcc_ufs_rx_symbol_1_clk",
-			.ops = &clk_gate2_ops,
+			.ops = &clk_branch2_ops,
 		},
 	},
 };
 
-static struct clk_gate2 gcc_ufs_tx_symbol_0_clk = {
-	.udelay = 500,
+static struct clk_branch gcc_ufs_tx_symbol_0_clk = {
+	.halt_reg = 0x75010,
+	.halt_check = BRANCH_HALT_SKIP,
 	.clkr = {
 		.enable_reg = 0x75010,
 		.enable_mask = BIT(0),
 		.hw.init = &(struct clk_init_data) {
 			.name = "gcc_ufs_tx_symbol_0_clk",
-			.ops = &clk_gate2_ops,
+			.ops = &clk_branch2_ops,
 		},
 	},
 };
@@ -2625,7 +2617,7 @@ static struct clk_gate2 gcc_usb3_phy_pipe_clk = {
 
 static struct clk_branch gcc_usb3_phy_pipe_clk = {
 	.halt_reg = 0x50004,
-	.halt_check = BRANCH_HALT_DELAY,
+	.halt_check = BRANCH_HALT_SKIP,
 	.clkr = {
 		.enable_reg = 0x50004,
 		.enable_mask = BIT(0),
@@ -3088,7 +3080,6 @@ static struct clk_regmap *gcc_msm8998_clocks[] = {
 	[GCC_GPU_BIMC_GFX_CLK] = &gcc_gpu_bimc_gfx_clk.clkr,
 	[GCC_GPU_CFG_AHB_CLK] = &gcc_gpu_cfg_ahb_clk.clkr,
 	[GCC_GPU_IREF_CLK] = &gcc_gpu_iref_clk.clkr,
-	[GCC_HMSS_DVM_BUS_CLK] = &gcc_hmss_dvm_bus_clk.clkr,
 	[GCC_HMSS_RBCPR_CLK] = &gcc_hmss_rbcpr_clk.clkr,
 	[GCC_MMSS_NOC_CFG_AHB_CLK] = &gcc_mmss_noc_cfg_ahb_clk.clkr,
 	[GCC_MMSS_SYS_NOC_AXI_CLK] = &gcc_mmss_sys_noc_axi_clk.clkr,
@@ -3273,23 +3264,14 @@ static int gcc_msm8998_probe(struct platform_device *pdev)
 	 * 1. Disable the GPLL0 active input to MMSS and GPU
 	 * 2. Select clk division 1 (CLK/2)
 	 */
-	regmap_write(regmap, 0x0902C, 0x10003); /* MMSS*/
-	regmap_write(regmap, 0x71028, 0x10003); /* GPU */
+	regmap_update_bits(regmap, 0x0902C, 0x3, 0x3);
+	regmap_update_bits(regmap, 0x71028, 0x3, 0x3);
 
 	ret = qcom_cc_really_probe(pdev, &gcc_msm8998_desc, regmap);
 	if (ret) {
 		dev_err(&pdev->dev, "Failed to register GCC clocks\n");
 		return ret;
 	}
-
-	/* This clock is used for all MMSSCC register access */
-	clk_prepare_enable(gcc_mmss_noc_cfg_ahb_clk.clkr.hw.clk);
-
-	/* Keep bimc gfx clock port on all the time */
-	clk_prepare_enable(gcc_bimc_gfx_clk.clkr.hw.clk);
-
-	/* This clock is used for all GPUCC register access */
-	clk_prepare_enable(gcc_gpu_cfg_ahb_clk.clkr.hw.clk);
 
 	/* Set the HMSS_GPLL0_SRC for 300MHz to CPU subsystem */
 	clk_set_rate(hmss_gpll0_clk_src.clkr.hw.clk, 300000000);
