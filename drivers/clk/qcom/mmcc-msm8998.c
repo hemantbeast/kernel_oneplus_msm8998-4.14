@@ -3684,8 +3684,8 @@ static int mmcc_msm8998_probe(struct platform_device *pdev)
 		msm_mmsscc_v2_fixup();
 	}
 
-	//clk_fabia_pll_configure(&mmpll0, regmap, &mmpll0_config);
-	//clk_fabia_pll_configure(&mmpll1, regmap, &mmpll1_config);
+	clk_fabia_pll_configure(&mmpll0, regmap, &mmpll0_config);
+	clk_fabia_pll_configure(&mmpll1, regmap, &mmpll1_config);
 	clk_fabia_pll_configure(&mmpll3, regmap, &mmpll3_config);
 	clk_fabia_pll_configure(&mmpll4, regmap, &mmpll4_config);
 	clk_fabia_pll_configure(&mmpll5, regmap, &mmpll5_config);
