@@ -651,33 +651,35 @@ static int limits_dcvs_probe(struct platform_device *pdev)
 				affinity);
 			return ret;
 		}
-		/* Enable the LMH outer loop algorithm */
-		ret = limits_dcvs_write(hw->affinity, LIMITS_SUB_FN_CRNT,
-			 LIMITS_ALGO_MODE_ENABLE, 1, 0, 0);
-		if (ret) {
-			pr_err("Unable to enable CRNT algo for cluster%d\n",
-				affinity);
-			return ret;
+		if (!of_property_read_bool(dn, "qcom,legacy-thermal-algo-only")) {
+			/* Enable the LMH outer loop algorithm */
+			ret = limits_dcvs_write(hw->affinity, LIMITS_SUB_FN_CRNT,
+				LIMITS_ALGO_MODE_ENABLE, 1, 0, 0);
+			if (ret) {
+				pr_err("Unable to enable CRNT algo for cluster%d\n",
+					affinity);
+				return ret;
+			}
+			/* Enable the Reliability algorithm */
+			ret = limits_dcvs_write(hw->affinity, LIMITS_SUB_FN_REL,
+				LIMITS_ALGO_MODE_ENABLE, 1, 0, 0);
+			if (ret) {
+				pr_err("Unable to enable REL algo for cluster%d\n",
+					affinity);
+				return ret;
+			}
+			/* Enable the BCL algorithm */
+			ret = limits_dcvs_write(hw->affinity, LIMITS_SUB_FN_BCL,
+				LIMITS_ALGO_MODE_ENABLE, 1, 0, 0);
+			if (ret) {
+				pr_err("Unable to enable BCL algo for cluster%d\n",
+					affinity);
+				return ret;
+			}
+			ret = enable_lmh();
+			if (ret)
+				return ret;
 		}
-		/* Enable the Reliability algorithm */
-		ret = limits_dcvs_write(hw->affinity, LIMITS_SUB_FN_REL,
-			 LIMITS_ALGO_MODE_ENABLE, 1, 0, 0);
-		if (ret) {
-			pr_err("Unable to enable REL algo for cluster%d\n",
-				affinity);
-			return ret;
-		}
-		/* Enable the BCL algorithm */
-		ret = limits_dcvs_write(hw->affinity, LIMITS_SUB_FN_BCL,
-			 LIMITS_ALGO_MODE_ENABLE, 1, 0, 0);
-		if (ret) {
-			pr_err("Unable to enable BCL algo for cluster%d\n",
-				affinity);
-			return ret;
-		}
-		ret = enable_lmh();
-		if (ret)
-			return ret;
 	}
 
 	addr = of_get_address(dn, 0, NULL, NULL);

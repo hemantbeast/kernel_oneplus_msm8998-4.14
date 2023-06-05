@@ -3093,6 +3093,7 @@
 		#thermal-sensor-cells = <0>;
 		qcom,plat-mitigation-disable;
 		qcom,legacy-lmh-enable;
+		qcom,legacy-thermal-algo-only;
 	};
 
 	lmh_dcvs1: qcom,limits-dcvs@1 {
@@ -3104,6 +3105,7 @@
 		#thermal-sensor-cells = <0>;
 		qcom,plat-mitigation-disable;
 		qcom,legacy-lmh-enable;
+		qcom,legacy-thermal-algo-only;
 	};
 };
 
