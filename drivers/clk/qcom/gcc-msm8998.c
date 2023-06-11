@@ -61,7 +61,7 @@ static const struct parent_map gcc_parent_map_1[] = {
 
 static const char * const gcc_parent_names_1[] = {
 	"bi_tcxo",
-	"gpll0",
+	"gpll0_out_main",
 };
 
 static const struct parent_map gcc_parent_map_1_ao[] = {
@@ -82,7 +82,7 @@ static const struct parent_map gcc_parent_map_2[] = {
 
 static const char * const gcc_parent_names_2[] = {
 	"bi_tcxo",
-	"gpll0",
+	"gpll0_out_main",
 	"gpll0_early_div",
 };
 
@@ -94,8 +94,8 @@ static const struct parent_map gcc_parent_map_4[] = {
 
 static const char * const gcc_parent_names_4[] = {
 	"bi_tcxo",
-	"gpll0",
-	"gpll4",
+	"gpll0_out_main",
+	"gpll4_out_main",
 };
 
 static const struct parent_map gcc_parent_map_5[] = {
@@ -106,7 +106,7 @@ static const struct parent_map gcc_parent_map_5[] = {
 
 static const char * const gcc_parent_names_5[] = {
 	"bi_tcxo",
-	"gpll0",
+	"gpll0_out_main",
 	"aud_ref_clk",
 };
 
@@ -119,7 +119,7 @@ static const struct parent_map gcc_parent_map_6[] = {
 
 static const char * const gcc_parent_names_6[] = {
 	"bi_tcxo",
-	"gpll0",
+	"gpll0_out_main",
 	"sleep_clk",
 	"gpll0_early_div",
 };
@@ -3275,8 +3275,8 @@ static int gcc_msm8998_probe(struct platform_device *pdev)
 
 	clk_set_flags(gcc_gpu_bimc_gfx_clk.clkr.hw.clk, CLKFLAG_RETAIN_MEM);
 
-	/* Set FSM Mode on GPLL0 (write to PLL_MODE register) */
-	qcom_pll_set_fsm_mode(gpll0.clkr.regmap, gpll0.offset, 6, 0);
+	/* Set FSM Mode on gpll0_out_main (write to PLL_MODE register) */
+	qcom_pll_set_fsm_mode(gpll0_out_main.clkr.regmap, gpll0.offset, 6, 0);
 
 	dev_info(&pdev->dev, "Registered GCC clocks\n");
 	return 0;
