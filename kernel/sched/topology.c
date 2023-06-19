@@ -1903,9 +1903,9 @@ build_sched_domains(const struct cpumask *cpu_map, struct sched_domain_attr *att
 		int min_cpu = READ_ONCE(d.rd->min_cap_orig_cpu);
 
 		if ((cpu_rq(i)->cpu_capacity_orig
-				!=  cpu_rq(min_cpu)->cpu_capacity_orig) &&
+				>  cpu_rq(min_cpu)->cpu_capacity_orig) &&
 			(cpu_rq(i)->cpu_capacity_orig
-				!=  cpu_rq(max_cpu)->cpu_capacity_orig)) {
+				<=  cpu_rq(max_cpu)->cpu_capacity_orig)) {
 			WRITE_ONCE(d.rd->mid_cap_orig_cpu, i);
 			break;
 		}
