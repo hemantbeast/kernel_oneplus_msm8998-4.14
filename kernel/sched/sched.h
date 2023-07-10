@@ -2983,14 +2983,6 @@ static inline bool is_min_capacity_cluster(struct sched_cluster *cluster)
 
 #else	/* CONFIG_SCHED_WALT */
 
-#if defined(CONFIG_SCHED_TUNE)
-extern bool task_sched_boost(struct task_struct *p);
-//extern int sync_cgroup_colocation(struct task_struct *p, bool insert);
-extern bool same_schedtune(struct task_struct *tsk1, struct task_struct *tsk2);
-extern void update_cgroup_boost_settings(void);
-extern void restore_cgroup_boost_settings(void);
-
-#else
 static inline bool
 same_schedtune(struct task_struct *tsk1, struct task_struct *tsk2)
 {
@@ -3004,7 +2996,6 @@ static inline bool task_sched_boost(struct task_struct *p)
 
 static inline void update_cgroup_boost_settings(void) { }
 static inline void restore_cgroup_boost_settings(void) { }
-#endif
 
 extern enum sched_boost_policy boost_policy;
 static inline enum sched_boost_policy sched_boost_policy(void)
