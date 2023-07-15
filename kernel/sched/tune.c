@@ -15,10 +15,6 @@
 bool schedtune_initialized = false;
 extern struct reciprocal_value schedtune_spc_rdiv;
 
-/* Input boost duration, default = 5 secs */
-#define SCHEDTUNE_INPUT_BOOST_MS 5000
-static bool schedtune_input_boost = true;
-
 /*
  * EAS scheduler tunables for task groups.
  */
@@ -463,11 +459,27 @@ void schedtune_dequeue_task(struct task_struct *p, int cpu)
 	raw_spin_unlock_irqrestore(&bg->lock, irq_flags);
 }
 
+/* Input boost duration, default = 5 secs */
+#define SCHEDTUNE_INPUT_DURATION (5 * HZ)
+static unsigned long schedtune_input_ts = INITIAL_JIFFIES;
+
+static inline bool 
+schedtune_input_timeout(void)
+{
+	unsigned long ts = READ_ONCE(schedtune_input_ts);
+
+	/* Don't timeout until ts has been updated */
+	if (unlikely(ts == INITIAL_JIFFIES))
+		return false;
+
+	return time_is_before_jiffies(ts + SCHEDTUNE_INPUT_DURATION);
+}
+
 int schedtune_cpu_boost(int cpu)
 {
 	struct boost_groups *bg;
 
-	if (!READ_ONCE(schedtune_input_boost))
+	if (schedtune_input_timeout())
 		return 0;
 
 	bg = &per_cpu(cpu_boost_groups, cpu);
@@ -638,21 +650,10 @@ static struct cftype files[] = {
 	{ }	/* terminate */
 };
 
-static void schedtune_input_fn(struct work_struct *work)
-{
-	WRITE_ONCE(schedtune_input_boost, false);
-	pr_info("schedtune: %d ms elapsed since last input, turned "
-			"off CPU boost\n", SCHEDTUNE_INPUT_BOOST_MS);
-}
-
-static DECLARE_DELAYED_WORK(schedtune_input_work, schedtune_input_fn);
-
 static void schedtune_input_event(struct input_handle *handle,
 		unsigned int type, unsigned int code, int value)
 {
-	if (schedule_delayed_work(&schedtune_input_work, 
-			msecs_to_jiffies(SCHEDTUNE_INPUT_BOOST_MS)))
-		WRITE_ONCE(schedtune_input_boost, true);
+	WRITE_ONCE(schedtune_input_ts, jiffies);
 }
 
 static int schedtune_input_connect(struct input_handler *handler,
