@@ -6,6 +6,7 @@
 #include <linux/rcupdate.h>
 #include <linux/slab.h>
 #include <linux/input.h>
+#include <linux/cpufreq.h>
 
 #include <trace/events/sched.h>
 
@@ -650,10 +651,41 @@ static struct cftype files[] = {
 	{ }	/* terminate */
 };
 
+static DEFINE_PER_CPU(struct work_struct, schedtune_input_cpufreq);
+static struct workqueue_struct *schedtune_input_wq;
+
+static void schedtune_input_fn(struct work_struct *work)
+{
+	struct rq *rq = this_rq();
+	unsigned long flags;
+
+	raw_spin_lock_irqsave(&rq->lock, flags);
+	cpufreq_update_util(rq, 0);
+	raw_spin_unlock_irqrestore(&rq->lock, flags);
+}
+
 static void schedtune_input_event(struct input_handle *handle,
 		unsigned int type, unsigned int code, int value)
 {
+	int cpu;
+
 	WRITE_ONCE(schedtune_input_ts, jiffies);
+
+	get_online_cpus();
+	for_each_online_cpu(cpu) {
+		struct cpufreq_policy *policy = cpufreq_cpu_get_raw(cpu);
+
+		if (!policy)
+			continue;
+
+		if (cpumask_first(policy->cpus) == cpu) {
+			struct work_struct *w = 
+					&per_cpu(schedtune_input_cpufreq, cpu);
+			if (!work_pending(w))
+				queue_work_on(cpu, schedtune_input_wq, w);
+		}
+	}
+	put_online_cpus();
 }
 
 static int schedtune_input_connect(struct input_handler *handler,
@@ -726,6 +758,20 @@ static struct input_handler schedtune_input_handler = {
 	.name		   = "schedtune_input_h",
 	.id_table	   = schedtune_input_ids,
 };
+
+static void 
+schedtune_init_input(void)
+{
+	if (!input_register_handler(&schedtune_input_handler)) {
+		int cpu;
+		schedtune_input_wq = alloc_workqueue("schedtune_input_wq", 
+				WQ_HIGHPRI | WQ_CPU_INTENSIVE, 0);
+		for_each_possible_cpu(cpu)
+			INIT_WORK(&per_cpu(schedtune_input_cpufreq, cpu), 
+					schedtune_input_fn);
+	} else
+		pr_err("Failed to register schedtune input handler\n");
+}
 
 static int
 schedtune_boostgroup_init(struct schedtune *st)
@@ -876,8 +922,7 @@ schedtune_init(void)
 {
 	schedtune_spc_rdiv = reciprocal_value(100);
 	schedtune_init_cgroups();
-	if (input_register_handler(&schedtune_input_handler))
-		pr_err("Failed to register schedtune input handler\n");
+	schedtune_init_input();
 	return 0;
 }
 postcore_initcall(schedtune_init);
